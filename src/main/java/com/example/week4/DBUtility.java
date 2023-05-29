@@ -23,7 +23,7 @@ public class DBUtility {
 
     // static method to store book in the db
     // this will return the bookId
-    public static int insertBookIntoDB(Book book){
+    public static int insertBookIntoDB(Book book) throws SQLException {
         int bookID = -1;
         ResultSet resultSet = null;
 
@@ -35,14 +35,31 @@ public class DBUtility {
         try(
                 Connection conn = DriverManager.getConnection(connectURL, user, pass);
                 PreparedStatement preparedStatement = conn.prepareStatement(sql, new String[]{"bookID"})
-                ){
+        )
+        {
+            // add values to our prepared statement
+            preparedStatement.setString(1, book.getBookName());
+            preparedStatement.setString(2, book.getAuthor());
+            preparedStatement.setString(3, book.getGenre());
+            preparedStatement.setDouble(4, book.getPrice());
+            preparedStatement.setBoolean(5, book.isAvailable());
 
+            // execute the statement
+            preparedStatement.executeUpdate();
+
+            // get the value of bookID
+            resultSet = preparedStatement.getGeneratedKeys();
+            while (resultSet.next()){
+                bookID = resultSet.getInt(1);
+            }
         }
         catch (Exception e){
-
+            e.printStackTrace();
         }
         finally {
-
+            if(resultSet != null){
+                resultSet.close();
+            }
         }
 
         return bookID;
