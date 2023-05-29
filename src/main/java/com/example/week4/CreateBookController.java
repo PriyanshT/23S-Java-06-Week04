@@ -76,7 +76,7 @@ public class CreateBookController implements Initializable {
             double price = priceSpinner.getValue();
             boolean availability = availibilityCheckBox.isSelected();
 
-            Book book1 = new Book(1, bookName, author, genre, price, availability);
+            Book book1 = new Book(bookName, author, genre, price, availability);
             finalLabel.setVisible(true);
             finalLabel.setText(book1.toString());
 
