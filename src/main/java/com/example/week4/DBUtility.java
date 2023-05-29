@@ -1,6 +1,7 @@
 package com.example.week4;
 
 import java.io.IOException;
+import java.sql.*;
 
 public class DBUtility {
     // user, pass and connectionString
@@ -24,6 +25,26 @@ public class DBUtility {
     // this will return the bookId
     public static int insertBookIntoDB(Book book){
         int bookID = -1;
+        ResultSet resultSet = null;
+
+        String sql = "INSERT INTO book (book_name, author, genre, price, is_available)\n" +
+                "VALUES (?,?,?,?,?);";
+
+        // this is called a 'try with resources' block
+        // everything inside this will be closed automatically
+        try(
+                Connection conn = DriverManager.getConnection(connectURL, user, pass);
+                PreparedStatement preparedStatement = conn.prepareStatement(sql, new String[]{"bookID"})
+                ){
+
+        }
+        catch (Exception e){
+
+        }
+        finally {
+
+        }
+
         return bookID;
     }
 }
